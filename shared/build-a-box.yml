@@ -1,0 +1,12 @@
+---
+# Set a version for this new box.
+
+# - name: Print info about current box.
+#   debug:
+#     msg: "Building new jcpetro97/{{ item }} box"
+
+# Build and push the new box.
+- name: Build and push the box using Packer.
+  command: >
+    packer build -force box-config.json
+    chdir={{ item }}

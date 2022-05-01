@@ -1,0 +1,57 @@
+#cloud-config
+autoinstall:
+  version: 1
+  identity:
+    hostname: ubuntu2204
+    password: '$6$rounds=4096$49Sb/C2ayO$vk0e5HaskiydCp3AcCNSGhLrbWntoeS.buD4Br5JvPccEHu5YujC6a28Qz1S/4NgObNWzT14uNMwgeyXfQLSC/'
+    username:  vagrant
+  keyboard: 
+    layout: en
+    variant: us
+  locale: en_US
+  user-data:
+    timezone: America/New_York
+  network:
+    network:
+      version: 2
+      ethernets:
+        enp0s3: 
+          dhcp4: true
+          dhcp-identifier: mac
+  ssh:
+    allow-pw: true
+    install-server: true
+  storage:
+    config:
+    - {ptable: gpt, path: /dev/sda, wipe: superblock, preserve: false, name: '', grub_device: true,
+      type: disk, id: disk-sda}
+    - {device: disk-sda, size: 1G, flag: bios_grub, number: 1, preserve: false,
+      type: partition, id: partition-0}
+    - {device: disk-sda, size: 1G, wipe: superblock, flag: '', number: 2,
+      preserve: false, type: partition, id: partition-1}
+    - {device: disk-sda, size: -1, wipe: superblock, flag: '', number: 3,
+      preserve: false, type: partition, id: partition-2}
+    # create LVM volume group
+    - name: system-vg
+      devices: [partition-2]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+#root     
+    - {name: root-lv, volgroup: lvm_volgroup-0, size: -1, preserve: false,
+      type: lvm_partition, id: lvm_partition-0}
+    - {fstype: xfs, volume: lvm_partition-0, preserve: false, type: format, id: rootvol-fs}
+    - {device: rootvol-fs, path: /, type: mount, id: mount-root}
+# boot    
+    - {fstype: xfs, volume: partition-1, preserve: false, type: format, id: bootvol-dev}
+    - {device: bootvol-dev, path: /boot, type: mount, id: mount-boot}
+  late-commands:
+    - 'echo "vagrant        ALL=(ALL)       NOPASSWD: ALL" > /target/etc/sudoers.d/vagrant'
+    - chmod 440 /target/etc/sudoers.d/vagrant
+
+  packages:
+    - build-essential
+    - make
+    - gcc
+    - perl
+    - git

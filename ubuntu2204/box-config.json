@@ -1,0 +1,94 @@
+{
+  "variables": {
+    "version": ""
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/ansible.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/setup.sh"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "../shared/main.yml",
+      "galaxy_file": "../shared/requirements.yml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/cleanup.sh"
+    }
+  ],
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "c",
+        "linux /casper/vmlinuz --- autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/' ",
+        "<enter><wait>",
+        "initrd /casper/initrd<enter><wait>",
+        "boot<enter>"
+      ], 
+      "boot_wait": "5s",
+      "disk_size": 51200,
+      "guest_os_type": "Ubuntu_64",
+      "headless": true,
+      "vrdp_bind_address": "0.0.0.0",
+      "http_directory": "http",
+      "iso_urls": [
+        "ubuntu-22.04-live-server-amd64.iso",
+        "http://releases.ubuntu.com/jammy/ubuntu-22.04-live-server-amd64.iso"
+      ],
+      "iso_checksum": "sha256:84aeaf7823c8c61baa0ae862d0a06b03409394800000b3235854a6b38eb4856f",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "45m",
+      "ssh_handshake_attempts": "1600",
+      "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "virtualbox_version_file": ".vbox_version",
+      "vm_name": "packer-ubuntu-22.04-amd64",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "4096"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--graphicscontroller",
+          "vmsvga"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "128"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ]
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "output": "builds/{{.Provider}}-ubuntu2204.box",
+        "type": "vagrant"
+      }
+    ]
+  ]
+}
+
