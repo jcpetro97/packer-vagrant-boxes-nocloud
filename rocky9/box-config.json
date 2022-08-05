@@ -40,6 +40,30 @@
           "{{.Name}}",
           "--cpus",
           "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/SSE4.1",
+          "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/SSE4.2",
+          "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/POPCNT",
+          "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/CMPXCHG16B",
+          "1"
         ]
       ]
     }
@@ -53,7 +77,8 @@
     {
       "type": "ansible-local",
       "playbook_file": "../shared/main.yml",
-      "galaxy_file": "../shared/requirements.yml"
+      "galaxy_file": "../shared/requirements.yml",
+      "galaxy_command": "ansible-galaxy -f ./requirements.yml -p ./roles"
     },
     {
       "type": "shell",
