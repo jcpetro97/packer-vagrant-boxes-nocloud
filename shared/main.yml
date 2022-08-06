@@ -20,13 +20,9 @@
         state: present
       when: ansible_os_family == 'Debian'
 
-
   roles:
-    - role: Geerlingguy.Nfs
-
     - role: packer-rhel
       when: ansible_os_family == 'RedHat'
 
     - role: packer-debian
       when: ansible_os_family == 'Debian'
-    #- role: Xfce4desktop
