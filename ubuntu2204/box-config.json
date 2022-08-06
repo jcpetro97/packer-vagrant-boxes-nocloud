@@ -16,7 +16,8 @@
     {
       "type": "ansible-local",
       "playbook_file": "../shared/main.yml",
-      "galaxy_file": "../shared/requirements.yml"
+      "galaxy_file": "../shared/requirements.yml",
+      "galaxy_roles_path": "roles"
     },
     {
       "type": "shell",
