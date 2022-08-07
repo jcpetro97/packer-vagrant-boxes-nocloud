@@ -1,11 +1,11 @@
 #cloud-config
 autoinstall:
   version: 1
-  early-commands:
-    # Stop ssh for packer
-    - sudo systemctl stop ssh
-  refresh-installer:
-      update: yes
+  # early-commands:
+  #   # Stop ssh for packer
+  #   - sudo systemctl stop ssh
+  # refresh-installer:
+  #     update: yes
   identity:
     hostname: ubuntu2004
     password: '$6$rounds=4096$49Sb/C2ayO$vk0e5HaskiydCp3AcCNSGhLrbWntoeS.buD4Br5JvPccEHu5YujC6a28Qz1S/4NgObNWzT14uNMwgeyXfQLSC/'

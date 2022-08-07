@@ -41,9 +41,9 @@
       "http_directory": "http",
       "iso_urls": [
         "ubuntu-20.04.4-live-server-amd64.iso",
-        "http://releases.ubuntu.com/focal/ubuntu-20.04.4-live-server-amd64.iso"
+        "http://old-releases.ubuntu.com/releases/20.04.3/ubuntu-20.04.3-live-server-amd64.iso"
       ],
-      "iso_checksum": "sha256:28ccdb56450e643bad03bb7bcf7507ce3d8d90e8bf09e38f6bd9ac298a98eaad",
+      "iso_checksum": "sha256:f8e3086f3cea0fb3fefb29937ab5ed9d19e767079633960ccb50e76153effc98",
       "ssh_username": "vagrant",
       "ssh_password": "vagrant",
       "ssh_port": 22,
@@ -64,6 +64,30 @@
           "modifyvm",
           "{{.Name}}",
           "--cpus",
+          "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/SSE4.1",
+          "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/SSE4.2",
+          "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/POPCNT",
+          "1"
+        ],
+        [
+          "setextradata",
+          "{{.Name}}",
+          "VBoxInternal/CPUM/IsaExts/CMPXCHG16B",
           "1"
         ]
       ]
