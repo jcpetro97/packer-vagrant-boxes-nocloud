@@ -1,11 +1,17 @@
 #cloud-config
+# runcmd:
+#  - [eval, 'echo $(cat /proc/cmdline) "autoinstall" > /root/cmdline']
+#  - [eval, 'mount -n --bind -o ro /root/cmdline /proc/cmdline']
+#  - [eval, 'snap restart subiquity.subiquity-service']
 autoinstall:
   version: 1
-  early-commands:
-    # Stop ssh for packer
-    - sudo systemctl stop ssh
-  refresh-installer:
-      update: yes
+  # apt:
+  #   preserve_sources_list: false
+  #   primary:
+  #   - arches: [amd64, i386]
+  #     uri: http://mirrors.rit.edu/ubuntu
+  #   - arches: [default]
+  #     uri: http://mirrors.rit.edu/ubuntu-ports
   identity:
     hostname: ubuntu2004
     password: '$6$rounds=4096$49Sb/C2ayO$vk0e5HaskiydCp3AcCNSGhLrbWntoeS.buD4Br5JvPccEHu5YujC6a28Qz1S/4NgObNWzT14uNMwgeyXfQLSC/'
