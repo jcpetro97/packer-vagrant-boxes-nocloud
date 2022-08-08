@@ -1,6 +1,11 @@
 #cloud-config
 autoinstall:
   version: 1
+  early-commands:
+    # Stop ssh for packer
+    - sudo systemctl stop ssh
+  refresh-installer:
+      update: yes
   identity:
     hostname: ubuntu2204
     password: '$6$rounds=4096$49Sb/C2ayO$vk0e5HaskiydCp3AcCNSGhLrbWntoeS.buD4Br5JvPccEHu5YujC6a28Qz1S/4NgObNWzT14uNMwgeyXfQLSC/'
@@ -11,13 +16,13 @@ autoinstall:
   locale: en_US
   user-data:
     timezone: America/New_York
-  network:
-    network:
-      version: 2
-      ethernets:
-        enp0s3: 
-          dhcp4: true
-          dhcp-identifier: mac
+  # network:
+  #   network:
+  #     version: 2
+  #     ethernets:
+  #       enp0s3: 
+  #         dhcp4: true
+  #         dhcp-identifier: mac
   ssh:
     allow-pw: true
     install-server: true
@@ -50,7 +55,6 @@ autoinstall:
     - chmod 440 /target/etc/sudoers.d/vagrant
 
   packages:
-    - build-essential
     - make
     - gcc
     - perl
